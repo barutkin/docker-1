@@ -1,2 +1,1 @@
-
 docker container rm --force $(docker container ps --all --quiet)
