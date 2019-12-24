@@ -1,0 +1,7 @@
+docker service create --name marines \
+	--detach \
+	--replicas 2 \
+	--network overmind \
+	--env OC_USERNAME=rabbit \
+	--env OC_PASSWD=rabhat \
+	42school/marine-squad

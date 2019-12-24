@@ -1,0 +1,1 @@
+docker swarm init --advertise-addr $(docker-machine ssh Char ifconfig | grep $(docker-machine ip Char) -B 1 | awk '$1!="inet" {print $1}')
