@@ -1,0 +1,71 @@
+version: "3.7"
+services:
+    web:
+        image: httpd:2.4.41
+        labels:
+            - "co.elastic.logs/module=apache"
+            - "co.elastic.logs/fileset.stdout=access"
+            - "co.elastic.logs/fileset.stderr=error"
+        volumes:
+            - ./html:/usr/local/apache2/htdocs
+        ports:
+            - 52080:80
+        networks:
+            elknet:
+                ipv4_address: 10.20.30.10
+    elastic:
+        image: elasticsearch:7.5.2
+        environment:
+            - discovery.type=single-node
+        ports:
+            - 9200:9200
+            - 9300:9300
+        networks:
+            elknet:
+                ipv4_address: 10.20.30.20
+                aliases:
+                    - elasticsearch
+    kibana:
+        image: kibana:7.5.2
+        depends_on:
+            - elastic
+        environment:
+            - elasticsearch.hosts=["elasticsearch:9200"]
+        ports:
+            - 5601:5601
+        networks:
+            elknet:
+                ipv4_address: 10.20.30.30
+                aliases:
+                    - kibana
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:7.5.2
+        depends_on:
+            - elastic
+            - kibana
+            - web
+        user: root
+        environment:
+            - output.elasticsearch.hosts=["elasticsearch:9200"]
+            #  it doesn't work (see filebeat.docker.yml)
+            # - setup.kibana.host=kibana:5601
+        volumes:
+            - ./filebeat/kibanawait.sh:/opt/kibanawait.sh:ro
+            #  add kibanawait.sh to docker-entrypoint
+            - ./docker-entrypoint:/usr/local/bin/docker-entrypoint:ro
+            - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        command: "filebeat -e -strict.perms=false"
+        networks:
+            elknet:
+                ipv4_address: 10.20.30.40
+                aliases:
+                    - filebeat
+
+networks:
+    elknet:
+        ipam:
+            driver: default
+            config:
+                - subnet: "10.20.30.0/24"
