@@ -6,6 +6,6 @@ The aim of the Docker-1 project is to understand the idea of containerization of
 
 ## Bonus part
 
-I used Docker Compose to up a part of Elastic stack (Filebeat, Elasticsearch and Kibana) in conjunction with Apache server.
+I used Docker Compose to bring up a part of Elastic stack (Filebeat, Elasticsearch and Kibana) to aggregate logs from Apache server.
 
 <p align="center"><img src="./bonus.svg" alt="Docker-1 project bonus part scheme" width="85%"/></p>
