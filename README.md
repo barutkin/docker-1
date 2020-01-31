@@ -9,4 +9,3 @@ The aim of the Docker-1 project is to understand the idea of containerization of
 I used Docker Compose to up a part of Elastic stack (Filebeat, Elasticsearch and Kibana) in conjunction with Apache server.
 
 <p align="center"><img src="./bonus.svg" alt="Docker-1 project bonus part scheme" width="85%"/></p>
-
