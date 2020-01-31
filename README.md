@@ -1,4 +1,5 @@
 <div align="right"><img src="./intra.png" alt="Docker-1 project result" width="15%" style="float: right;"/></div>
+
 # Docker-1
 
 The aim of the Docker-1 project is to understand the idea of containerization of services.
